@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteVentas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f7c7864a-acbb-48eb-9821-fd43b1cc5f78">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+EXTRACT(YEAR FROM CONTRATO_IDA) AS AÑO,
+COUNT(CONTRATO_ID) AS TOTAL_PAQUETES_COMPRADOS,
+CT.CENTRO_NOMBRE AS CENTRO
+FROM CONTRATO C
+INNER JOIN ASESOR_DE_VIAJE AV ON C.ASESOR_ID=AV.ASESOR_ID
+INNER JOIN CENTRO_DE_VENTAS_PT CT ON AV.CENTRO_ID=CT.CENTRO_ID
+GROUP BY EXTRACT(YEAR FROM CONTRATO_IDA),CT.CENTRO_ID
+ORDER BY EXTRACT(YEAR FROM CONTRATO_IDA) DESC;]]>
+	</queryString>
+	<field name="aÑo" class="java.lang.Double"/>
+	<field name="total_paquetes_comprados" class="java.lang.Long"/>
+	<field name="centro" class="java.lang.String"/>
+	<variable name="centro_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{centro}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="68" y="0" width="425" height="55" uuid="1b1c44ae-5d4c-41dc-ae89-19bafb07aac8"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Realizar un reporte con Irpeort que muestre con un diagrama de barras cuanto hubo den ventas por años]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="163" y="0" width="290" height="19" uuid="9842b92a-052d-44b2-a4b9-0ee0a68beff0"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Turismo Mankar Reporte de venta Anual]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="120" y="2" width="100" height="20" uuid="ba98e4e2-f825-42ba-b3b4-e3f9c7c22c57"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="321" y="2" width="172" height="20" uuid="d1986ec2-64ef-49f6-b539-f2e0bf5a288c"/>
+				<text><![CDATA[Total de paquetes vendidos]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement x="120" y="13" width="100" height="20" uuid="311acee5-1335-4110-874c-4496deec12e5"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{aÑo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="13" width="100" height="20" uuid="6d767c1c-92ad-4566-8e8a-f662fefbc3f8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{total_paquetes_comprados}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="181" splitType="Stretch">
+			<bar3DChart>
+				<chart>
+					<reportElement x="94" y="17" width="359" height="164" uuid="ce4dbb69-20d6-4ad5-9938-997ef03dff2e"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{aÑo}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{total_paquetes_comprados}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</summary>
+</jasperReport>
